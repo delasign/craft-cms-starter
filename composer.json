@@ -9,7 +9,8 @@
   },
   "autoload": {
     "psr-4": {
-      "modules\\": "modules/"
+      "modules\\": "modules/",
+      "subscription\\": "modules/subscription"
     }
   },
   "config": {

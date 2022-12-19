@@ -24,4 +24,10 @@ use craft\helpers\App;
 
 return [
     'id' => App::env('CRAFT_APP_ID') ?: 'CraftCMS',
+    // Add your module below the id
+    'modules' => [
+        'subscription' => subscription\Module::class
+    ],
+    // Make sure it's bootstrapped as well
+    'bootstrap' => 'subscription'
 ];
