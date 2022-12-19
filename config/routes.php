@@ -9,4 +9,8 @@
  * https://craftcms.com/docs/4.x/routing.html
  */
 
-return [];
+return [
+    'GET api/getall' => 'subscription/get-all-subscribers/resolve-request',
+    'POST api/subscribe' => 'subscription/new-subscriber/resolve-request',
+    'PUT api/unsubscribe' => 'subscription/un-subscribe/resolve-request'
+];

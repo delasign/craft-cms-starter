@@ -29,5 +29,7 @@ return [
         'subscription' => subscription\Module::class
     ],
     // Make sure it's bootstrapped as well
-    'bootstrap' => 'subscription'
+    'bootstrap' => [
+        'subscription'
+    ]
 ];

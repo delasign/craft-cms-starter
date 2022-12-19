@@ -2,6 +2,10 @@
 namespace subscription;
 
 use Craft;
+// The following imports are required to listen for the the RESTful requests
+use craft\events\RegisterUrlRulesEvent;
+use craft\web\UrlManager;
+use yii\base\Event;
 
 class Module extends \yii\base\Module
 {
@@ -19,6 +23,15 @@ class Module extends \yii\base\Module
 
         parent::init();
 
-        // Custom initialization code goes here...
+        // Add Events for the URL Rules
+        Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_SITE_URL_RULES,
+            function(RegisterUrlRulesEvent $event) {
+                $event->rules = array_merge($event->rules, [
+                    'GET api/getall' => 'subscription/get-all-subscribers/resolve-request',
+                    'POST api/subscribe' => 'subscription/new-subscriber/resolve-request',
+                    'PUT api/unsubscribe' => 'subscription/un-subscribe/resolve-request'
+               ]);
+            }
+        );
     }
 }
