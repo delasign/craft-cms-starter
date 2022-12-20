@@ -58,11 +58,30 @@ class NewSubscriberController extends Controller
 
     public function beforeAction($action): bool
     {
+        // DISABLE CSRF PROTECTION TO ALLOW FOR RESTFUL REQUESTS THAT ARE NOT GET REQUESTS
+        // =========================================================================
         // Disable protection for the action 'resolve-request'.
         // The actions must be in 'kebab-case'.
         if ($action->id === 'resolve-request') {
             $this->enableCsrfValidation = false;
         }
+        // API KEY VALIDATION
+        // =========================================================================
+        // Get the API Key
+        $apiKey = App::env('CRAFT_ENDPOINT_API_KEY');
+        // Get the API Key through the x-api-key parameter
+        $key = Craft::$app->getRequest()->getParam('x-api-key', '');
+
+         // Verify provided key against API key
+        if (empty($key) || empty($apiKey) || $key != $apiKey) {
+            /* Throw a 403 - FORBIDDEN, if there 
+            * - is no API Key in Craft
+            * - there is no API Key in the request
+            * - there API key does not match that of the request
+            */
+            throw new HttpException(403, 'Unauthorised API key.');
+        }
+        
 
         return parent::beforeAction($action);
     }
