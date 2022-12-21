@@ -38,6 +38,8 @@ use craft\helpers\App;
 use craft\web\Controller;
 use yii\web\HttpException;
 use yii\web\Response;
+// Import Entry to allow for entries to work
+use craft\elements\Entry;
 
 class GetAllSubscribersController extends Controller
 {
@@ -94,6 +96,7 @@ class GetAllSubscribersController extends Controller
      */
     public function actionResolveRequest(): Response
     { 
-        return $this->asJSON("Here are all the details for our subscribers.");
+        $entries = Entry::find()->section(["subscribers"])->all();
+        return $this->asJSON($entries);
     }
 }
