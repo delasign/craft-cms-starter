@@ -39,6 +39,8 @@ use craft\helpers\App;
 use craft\web\Controller;
 use yii\web\HttpException;
 use yii\web\Response;
+// Import Entry to allow for entries to work
+use craft\elements\Entry;
 
 class UnSubscribeController extends Controller
 {
@@ -100,7 +102,41 @@ class UnSubscribeController extends Controller
      */
     public function actionResolveRequest(): Response
     { 
-        return $this->sendResponse(200, null, "Recieved Unsubscribe Request");
+        // Get the body of the API call
+        $body = Craft::$app->request->getBodyParams();
+        // Verify that all the neccesary body parameters exist
+        // In this case, we need to check that the name and email exist.
+
+        if (isset($body['email'])) {
+            $email = $body['email'];
+        } else {
+            return $this->sendResponse(400,'Body is missing email variable.', null);
+        }
+
+        // Get the subscriber section
+        $subscribers = Entry::find()->section(["subscribers"]);
+        //Check that the email does not exist
+        $emailExists = $subscribers->email($email)->count() == 1;
+        // If it exist, if it doesn't do not continue
+        if ($emailExists) {
+            // Get the subscriber
+            $subscriber = $subscribers->email($email)->one();
+            // Modify the subscriber by setting subscribed to false;
+            $subscriber->subscribed = false;
+            // Save the entry and set whether it succeeded to a $success parameter.
+            $success = Craft::$app->elements->saveElement($subscriber);
+            // Check if it succesful
+            if ($success) {
+                // If it succeeds send a successful response
+                return $this->sendResponse(200, null, "Subscriber with email " . $email . " has been unsubscribed.");
+            } else {
+                // Else send a 400
+                return $this->sendResponse(400,"Failed to unsubscribe subscriber with email: ". $email .".", null);
+            }
+        }
+        else {
+            return $this->sendResponse(400,'A subscriber does not exist with email:'. $email . '.', null);   
+        }
     }
 
     /**
