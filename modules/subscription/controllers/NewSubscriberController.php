@@ -123,7 +123,6 @@ class NewSubscriberController extends Controller
         $emailExists = $subscribers->email($email)->count() > 0;
         // If it exist, do not continue
         if ($emailExists) {
-            // return $this->asJSON("Email Already Exists.");
             return $this->sendResponse(400,"Email Already Exists.", null);
         } else {
             // If it doesn't exist, create new subscriber entry
@@ -145,7 +144,6 @@ class NewSubscriberController extends Controller
             } else {
                 // Else send a 400
                 return $this->sendResponse(400,"Failed to create a subscriber.", null);
-                // return throw new HttpException(400, "Couldn't save the entry");
             }
         }
     }
