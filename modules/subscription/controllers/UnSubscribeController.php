@@ -72,14 +72,19 @@ class UnSubscribeController extends Controller
         // Get the API Key through the x-api-key parameter
         $key = Craft::$app->getRequest()->getParam('x-api-key', '');
 
-         // Verify provided key against API key
+        // Verify provided key against API key
         if (empty($key) || empty($apiKey) || $key != $apiKey) {
             /* Throw a 403 - FORBIDDEN, if there 
             * - is no API Key in Craft
             * - there is no API Key in the request
             * - there API key does not match that of the request
+            * If you wish to use a conventional HTTPException use the line below.
+            * throw new HttpException(403, 'Unauthorised API key.');
+            *
+            * We prefer to use a standardized response.
             */
-            throw new HttpException(403, 'Unauthorised API key.');
+            $this->sendResponse(403, 'Unauthorised API key.', null);
+            return false;
         }
         
 
@@ -95,6 +100,27 @@ class UnSubscribeController extends Controller
      */
     public function actionResolveRequest(): Response
     { 
-        return $this->asJSON("Recieved Unsubscribe Request");
+        return $this->sendResponse(200, null, "Recieved Unsubscribe Request");
+    }
+
+    /**
+     * Send a response based on a status code ($code), an error ($error) & a response ($response).
+     *
+     * @return array
+     */
+
+    public function sendResponse(int $code, mixed $error, mixed $response) {
+        return $this->asJSON([
+            'statusCode' => $code,
+            'headers' => [
+                "Access-Control-Allow-Origin"  => "*", // Required for CORS support to work
+                "Access-Control-Allow-Credentials" => true, // Required for cookies, authorization headers with HTTPS
+                "Content-Type" => "application/json"
+            ],
+            'body' => [
+                'error' => $error,
+                'response' => $response
+            ]
+        ]);
     }
 }
