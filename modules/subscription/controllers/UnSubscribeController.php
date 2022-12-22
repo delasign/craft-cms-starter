@@ -95,6 +95,27 @@ class UnSubscribeController extends Controller
      */
     public function actionResolveRequest(): Response
     { 
-        return $this->asJSON("Recieved Unsubscribe Request");
+        return $this->sendResponse(200, null, "Recieved Unsubscribe Request");
+    }
+
+    /**
+     * Send a response based on a status code ($code), an error ($error) & a response ($response).
+     *
+     * @return array
+     */
+
+    public function sendResponse(int $code, mixed $error, mixed $response) {
+        return $this->asJSON([
+            'statusCode' => $code,
+            'headers' => [
+                "Access-Control-Allow-Origin"  => "*", // Required for CORS support to work
+                "Access-Control-Allow-Credentials" => true, // Required for cookies, authorization headers with HTTPS
+                "Content-Type" => "application/json"
+            ],
+            'body' => [
+                'error' => $error,
+                'response' => $response
+            ]
+        ]);
     }
 }
