@@ -38,6 +38,8 @@ use craft\helpers\App;
 use craft\web\Controller;
 use yii\web\HttpException;
 use yii\web\Response;
+// Import Entry to allow for entries to work
+use craft\elements\Entry;
 
 class NewSubscriberController extends Controller
 {
@@ -81,7 +83,7 @@ class NewSubscriberController extends Controller
             */
             throw new HttpException(403, 'Unauthorised API key.');
         }
-        
+
 
         return parent::beforeAction($action);
     }
@@ -93,7 +95,75 @@ class NewSubscriberController extends Controller
      * @return mixed
      */
     public function actionResolveRequest(): Response
-    { 
-        return $this->asJSON("Recieved New Subscriber Request");
+    {
+        // Get the body of the API call
+        $body = Craft::$app->request->getBodyParams();
+        // Verify that all the neccesary body parameters exist
+        // In this case, we need to check that the name and email exist.
+
+        if (isset($body['email'])) {
+            $email = $body['email'];
+        } else {
+            return $this->sendResponse(400,'Body is missing email variable.', null);
+        }
+
+        if (isset($body['name'])) {
+            $name = $body['name'];
+        } else {
+            return $this->sendResponse(400,'Body is missing name variable.', null);
+        }
+
+        // Get the subscriber section
+        $subscribers = Entry::find()->section(["subscribers"]);
+        //Check that the email does not exist
+        $emailExists = $subscribers->email($email)->count() > 0;
+        // If it exist, do not continue
+        if ($emailExists) {
+            // return $this->asJSON("Email Already Exists.");
+            return $this->sendResponse(400,"Email Already Exists.", null);
+        } else {
+            // If it doesn't exist, create new subscriber entry
+            $newSubscriber = new Entry();
+            // Set the section Id to match that of the subscribers
+            $newSubscriber->sectionId = $subscribers->sectionId[0];
+            // Set the field values
+            $newSubscriber->setFieldValues([
+                "email" => $email,
+                "subscriberName" => $name,
+                "subscribed" => true
+            ]);
+            // Save the entry and set wheter it succeeded to a $success parameter.
+            $success = Craft::$app->elements->saveElement($newSubscriber);
+            // Check if it s
+            if ($success) {
+                // If it succeeds send a successful response
+                return $this->sendResponse(200, null, "Succesfully created a subscriber with email: ". $email);
+            } else {
+                // Else send a 400
+                return $this->sendResponse(400,"Failed to create a subscriber.", null);
+                // return throw new HttpException(400, "Couldn't save the entry");
+            }
+        }
+    }
+
+    /**
+     * Send a response based on a status code ($code), an error ($error) & a response ($response).
+     *
+     * @return array
+     */
+
+    public function sendResponse(int $code, mixed $error, mixed $response) {
+        return $this->asJSON([
+            'statusCode' => $code,
+            'headers' => [
+                "Access-Control-Allow-Origin"  => "*", // Required for CORS support to work
+                "Access-Control-Allow-Credentials" => true, // Required for cookies, authorization headers with HTTPS
+                "Content-Type" => "application/json"
+            ],
+            'body' => [
+                'error' => $error,
+                'response' => $response
+            ]
+        ]);
     }
 }
