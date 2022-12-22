@@ -75,6 +75,27 @@ class GetAllSubscribersController extends Controller
      */
     public function actionResolveRequest(): Response
     { 
-        return $this->asJSON("Here are all the details for our subscribers.");
+        return $this->sendResponse(200, null, "Here are all the details for our subscribers.");
+    }
+
+    /**
+     * Send a response based on a status code ($code), an error ($error) & a response ($response).
+     *
+     * @return array
+     */
+
+    public function sendResponse(int $code, mixed $error, mixed $response) {
+        return $this->asJSON([
+            'statusCode' => $code,
+            'headers' => [
+                "Access-Control-Allow-Origin"  => "*", // Required for CORS support to work
+                "Access-Control-Allow-Credentials" => true, // Required for cookies, authorization headers with HTTPS
+                "Content-Type" => "application/json"
+            ],
+            'body' => [
+                'error' => $error,
+                'response' => $response
+            ]
+        ]);
     }
 }
