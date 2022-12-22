@@ -74,7 +74,7 @@ class GetAllSubscribersController extends Controller
         // Get the API Key through the x-api-key parameter
         $key = Craft::$app->getRequest()->getParam('x-api-key', '');
 
-         // Verify provided key against API key
+        // Verify provided key against API key
         if (empty($key) || empty($apiKey) || $key != $apiKey) {
             /* Throw a 403 - FORBIDDEN, if there 
             * - is no API Key in Craft
@@ -85,8 +85,8 @@ class GetAllSubscribersController extends Controller
             *
             * We prefer to use a standardized response.
             */
-            
-            return $this->sendResponse(403, 'Unauthorised API key.', null);
+            $this->sendResponse(403, 'Unauthorised API key.', null);
+            return false;
         }
         
 
