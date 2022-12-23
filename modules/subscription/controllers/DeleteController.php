@@ -38,6 +38,8 @@ use craft\helpers\App;
 use craft\web\Controller;
 use yii\web\HttpException;
 use yii\web\Response;
+// Import Entry to allow for entries to work
+use craft\elements\Entry;
 
 class DeleteController extends Controller
 {
@@ -93,13 +95,47 @@ class DeleteController extends Controller
     
     /**
      * Handle a request going to our module's actionNewSubscriber URL,
-     * e.g.: subscription/new-subscriber/resolve-request
+     * e.g.: subscription/delete/resolve-request
      *
      * @return mixed
      */
     public function actionResolveRequest(): Response
     { 
-        return $this->sendResponse(200, null, "Deleted Subscriber.");
+        // Get the body of the API call
+        $body = Craft::$app->request->getBodyParams();
+        // Verify that all the neccesary body parameters exist
+        // In this case, we need to check that the name and email exist.
+
+        if (isset($body['email'])) {
+            $email = $body['email'];
+        } else {
+            return $this->sendResponse(400,'Body is missing email variable.', null);
+        }
+
+        // Get the subscriber section
+        $subscribers = Entry::find()->section(["subscribers"]);
+        //Check that the email does not exist
+        $emailExists = $subscribers->email($email)->count() == 1;
+        // If it exist, if it doesn't do not continue
+        if ($emailExists) {
+            // Get the subscriber
+            $subscriber = $subscribers->email($email)->one();
+            // Modify the subscriber by setting subscribed to false;
+            $subscriber->subscribed = false;
+            // Save the entry and set whether it succeeded to a $success parameter.
+            $success = Craft::$app->elements->deleteElement($subscriber);
+            // Check if it succesful
+            if ($success) {
+                // If it succeeds send a successful response
+                return $this->sendResponse(200, null, "Subscriber with email " . $email . " has been deleted.");
+            } else {
+                // Else send a 400
+                return $this->sendResponse(400,"Failed to delete subscriber with email: ". $email .".", null);
+            }
+        }
+        else {
+            return $this->sendResponse(400,'A subscriber does not exist with email:'. $email . '.', null);   
+        }
     }
 
     /**
