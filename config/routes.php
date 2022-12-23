@@ -12,5 +12,6 @@
 return [
     'GET api/getall' => 'subscription/get-all-subscribers/resolve-request',
     'POST api/subscribe' => 'subscription/new-subscriber/resolve-request',
-    'PUT api/unsubscribe' => 'subscription/un-subscribe/resolve-request'
+    'PUT api/unsubscribe' => 'subscription/un-subscribe/resolve-request',
+    'DELETE api/delete' => 'subscription/delete/resolve-request',
 ];
