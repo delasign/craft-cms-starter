@@ -1,0 +1,37 @@
+{
+  "name": "delasign/craft-cms-starter-plugin",
+  "description": "Sample Open Source Plugin Repository",
+  "type": "craft-plugin",
+  "version": "1.0.0",
+  "keywords": ["craft", "cms", "craft-plugin", "sample starter plugin"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Oscar de la Hera Gomez",
+      "homepage": "https://www.delasign.com"
+    }
+  ],
+  "support": {
+    "email": "inquiries@delasign.com",
+    "issues": "https://github.com/delasign/craft-cms-starter-plugin/issues?state=open",
+    "source": "https://github.com/delasign/craft-cms-starter-plugin",
+    "docs": "https://github.com/delasign/craft-cms-starter-plugin/blob/master/README.md"
+  },
+  "require": {
+    "craftcms/cms": "^4.3.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "delasign\\craftcmsstarterplugin\\": "src/"
+    }
+  },
+  "extra": {
+    "name": "Craft CMS Plugin Starter",
+    "handle": "craftcmsstarterplugin",
+    "developer": "Oscar de la Hera Gomez",
+    "developerUrl": "https://www.delasign.com",
+    "documentationUrl": "https://github.com/delasign/craft-cms-starter-plugin/blob/master/README.md",
+    "changelogUrl": "https://raw.githubusercontent.com/delasign/craft-cms-starter-plugin/master/CHANGELOG.md",
+    "class": "delasign\\craftcmsstarterplugin\\Plugin"
+  }
+}

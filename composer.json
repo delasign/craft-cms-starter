@@ -1,6 +1,18 @@
 {
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "repositories": [
+    {
+      "type": "path",
+      "url": "./plugins/craft-cms-starter-plugin",
+      "options": {
+        "symlink": true
+      }
+    }
+  ],
   "require": {
     "craftcms/cms": "^4.3.5",
+    "delasign/craft-cms-starter-plugin": "^1.0",
     "vlucas/phpdotenv": "^5.4.0"
   },
   "require-dev": {
