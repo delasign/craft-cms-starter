@@ -4,6 +4,7 @@ namespace delasign\craftcmsstarterplugin;
 
 use Craft;
 use craft\services\Plugins;
+use yii\base\Event;
 
 class Plugin extends \craft\base\Plugin
 {
@@ -31,7 +32,7 @@ class Plugin extends \craft\base\Plugin
     /**
      * @var bool
      */
-    public bool $hasCpSection = false;
+    public bool $hasCpSection = true;
 
     public function init()
     {
