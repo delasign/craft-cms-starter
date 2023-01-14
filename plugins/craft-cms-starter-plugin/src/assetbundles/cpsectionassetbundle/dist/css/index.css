@@ -1,0 +1,67 @@
+/**
+ * Mail Service Plugin
+ *
+ * Index CSS
+ *
+ * @author    Oscar de la Hera Gomez
+ * @copyright Copyright (c) 2022 delasign
+ * @link      www.delasign.com
+ * @package   Mail Service
+ * @since     1.0.0
+ */
+
+.inheritWidth {
+    width: inherit;
+}
+
+.headerContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.headerButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.alertBar {
+    /* background-color: white; */
+    color: black;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sendTestButton {
+    color: white;
+    background-color: blueviolet !important;
+}
+
+.emailBlock {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+.emailBlock>h3 {
+    margin: 0;
+}

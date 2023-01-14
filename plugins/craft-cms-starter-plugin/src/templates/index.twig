@@ -1,3 +1,42 @@
+{# Import Asset Bundle #}
+{% do view.registerAssetBundle("delasign\\craftcmsstarterplugin\\assetbundles\\cpsectionassetbundle\\CpSectionAssetBundle") %}
 {% extends "_layouts/cp.twig" %}
 {# Set Title #}
 {% set title = "Custom CP Section" %}
+
+{% block header %}
+<div class="headerContainer">
+  <div class="header">  
+    <div class="inheritWidth">
+      <h1>Mail Service</h1>
+    </div>
+    <div class="headerButtons">
+      <button id="sendEmail" class="disabled btn submit">Send Email</button>
+    </div> 
+  </div> 
+  <div class="alertBar hidden" id="alertBar">
+    <h2>Please select a subscriber (exactly one) to send an email to.<br/>Once you do, the buttons will become available and this alert will dissapear.</h2>
+  </div> 
+</div>
+{% endblock %}
+{% block content %}
+  <h2>Select a subscriber</h2>
+  <p> 
+    Select the subscriber to send an email to.
+  </p>
+    
+    {% for entry in craft.entries.section("subscribers") %}
+    <div class="emailBlock">
+      <input 
+        class="emailCheckbox"
+        type="checkbox"
+        name="{{ entry.id }}"
+        value=""/>
+        <h3>{{ entry.title }}</h3>
+    </div>
+    {% endfor %}
+{% endblock %}
+
+{% js %}
+  new MailService();
+{% endjs %}

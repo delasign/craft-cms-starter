@@ -37,6 +37,8 @@ class Plugin extends \craft\base\Plugin
     public function init()
     {
         parent::init();
+        // Define a custom alias named after the namespace
+        Craft::setAlias('@craftcmsstarterplugin', __DIR__);
         // Custom initialization code goes here...
         self::$plugin = $this;
     }
