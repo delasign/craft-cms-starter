@@ -38,8 +38,6 @@ use craft\helpers\App;
 use craft\web\Controller;
 use yii\web\HttpException;
 use yii\web\Response;
-// Import the plugin to use the service, via the config
-use delasign\mailservice\MailService;
 
 class SampleController extends Controller
 {
@@ -66,7 +64,7 @@ class SampleController extends Controller
 
     /**
      * Handle a sample controller action
-     * e.g.: craftcmsstarterplugin/craftcmsstarterplugin/sample-invocation
+     * e.g.: craftcmsstarterplugin/sample/sample-invocation
      *
      * @return redirect
      */

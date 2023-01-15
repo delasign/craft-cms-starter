@@ -53,6 +53,7 @@
         }, onPressSend: function (e) {
             if (this.getNumberOfCheckedItems() === 1) {
                 console.log("PRESSED SEND : ", this.getSelectedEmailEntryId());
+                window.location.href = "/?p=admin/actions/craftcmsstarterplugin/sample/sample-invocation&id=" + this.getSelectedEmailEntryId();
             }
         }, getSelectedEmailEntryId: function () {
             const inputs = document.getElementsByClassName("emailCheckbox");
