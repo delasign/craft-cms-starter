@@ -1,6 +1,6 @@
 {
   "name": "delasign/craft-cms-starter-plugin",
-  "description": "Sample Open Source Plugin Repository",
+  "description": "Sample plugin description.",
   "type": "craft-plugin",
   "version": "1.0.0",
   "keywords": ["craft", "cms", "craft-plugin", "sample starter plugin"],
@@ -26,7 +26,7 @@
     }
   },
   "extra": {
-    "name": "Craft CMS Plugin Starter",
+    "name": "Sample Craft CMS Plugin",
     "handle": "craftcmsstarterplugin",
     "developer": "Oscar de la Hera Gomez",
     "developerUrl": "https://www.delasign.com",
